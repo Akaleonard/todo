@@ -24,9 +24,23 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/', async (req, res) => {
-  res.send('put');
-  console.log('test')
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+
+  try {
+    const updatedTodo = await Todo.findByIdAndUpdate(id, { name }, { new: true });   
+    
+    if (!updatedTodo) {
+        return res.status(404).json({ error: 'Todo not found'});
+    }
+
+    res.status(200).json(updatedTodo);
+  } catch (error) {
+      console.error('Error updating todo:', error);
+      res.status(500).json({ error: 'Failed to update todo' });    
+  }
+
 });
 
 router.delete('/:id', async (req, res) => {
