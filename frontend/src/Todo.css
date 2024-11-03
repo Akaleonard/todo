@@ -1,0 +1,22 @@
+.todo-item {
+  position: relative;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex; /* To align items */
+  justify-content: center;
+  align-items: center; /* Vertically center items */
+}
+
+.delete-icon {
+  visibility: hidden; /* Start hidden */
+  opacity: 0; /* Fully transparent */
+  transition: opacity 0.2s ease, visibility 0.2s ease; /* Smooth transition */
+  cursor: pointer; /* Change cursor on hover */
+}
+
+.todo-item:hover .delete-icon {
+  visibility: visible; /* Show on hover */
+  opacity: 1; /* Fully visible */
+}
