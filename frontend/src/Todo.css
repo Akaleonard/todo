@@ -4,19 +4,21 @@
   margin: 5px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
-  display: flex; /* To align items */
+  display: flex;
   justify-content: center;
-  align-items: center; /* Vertically center items */
+  align-items: center;
 }
 
+.edit-icon,
 .delete-icon {
-  visibility: hidden; /* Start hidden */
-  opacity: 0; /* Fully transparent */
-  transition: opacity 0.2s ease, visibility 0.2s ease; /* Smooth transition */
-  cursor: pointer; /* Change cursor on hover */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  cursor: pointer;
 }
 
+.todo-item:hover .edit-icon,
 .todo-item:hover .delete-icon {
-  visibility: visible; /* Show on hover */
-  opacity: 1; /* Fully visible */
+  visibility: visible;
+  opacity: 1;
 }

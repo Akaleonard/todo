@@ -5,6 +5,7 @@ import Todo from './Todo.js';
 const Todos = () => {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState('');
+  const [editingTodo, setEditingTodo] = useState(null);
 
   const fetchTodos = async () => {
     try {
@@ -42,9 +43,34 @@ const Todos = () => {
     }
   };
 
+  const handleUpdateTodo = async (id, updatedName) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/api/routes/${id}`,
+        {
+          name: updatedName,
+        }
+      );
+      setTodos(todos.map((todo) => (todo._id === id ? response.data : todo)));
+      setNewTodo('');
+      setEditingTodo(null);
+    } catch (error) {
+      console.error('Error updating todo:', error);
+    }
+  };
+
+  const handleEditClick = (todo) => {
+    setEditingTodo(todo);
+    setNewTodo(todo.name);
+  };
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      handleAddTodo();
+      if (editingTodo) {
+        handleUpdateTodo(editingTodo._id, newTodo);
+      } else {
+        handleAddTodo();
+      }
     }
   };
 
@@ -59,15 +85,28 @@ const Todos = () => {
         type="text"
         value={newTodo}
         onChange={handleInputChange}
-        placeholder="Add new todo"
+        placeholder={editingTodo ? 'Update todo' : 'Add new todo'}
         onKeyDown={handleKeyPress}
       />
-      <button onClick={handleAddTodo}>Add Todo</button>
+      <button
+        onClick={
+          editingTodo
+            ? () => handleUpdateTodo(editingTodo._id, newTodo)
+            : handleAddTodo
+        }
+      >
+        {editingTodo ? 'Update Todo' : 'Add Todo'}
+      </button>
       {todos.length === 0 ? (
         <p>No todos available.</p>
       ) : (
         todos.map((todo) => (
-          <Todo key={todo._id} todo={todo} onDelete={handleDeleteTodo} />
+          <Todo
+            key={todo._id}
+            todo={todo}
+            onDelete={handleDeleteTodo}
+            onEditClick={handleEditClick}
+          />
         ))
       )}
     </div>
